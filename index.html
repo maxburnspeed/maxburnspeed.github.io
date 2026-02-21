@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>facepalm tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080b0f;
+      --surface: #0d1117;
+      --border: #1e2a38;
+      --accent: #00ffe0;
+      --accent2: #ff4d6d;
+      --text: #c9d6e3;
+      --dim: #4a5a6b;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    /* noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* grid lines */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,224,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,224,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+
+    /* glow blob */
+    .blob {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,255,224,0.06) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: clamp(0.75rem, 2vw, 0.9rem);
+      color: var(--accent);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+
+    .logo span {
+      color: var(--accent2);
+    }
+
+    .tagline {
+      font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+      font-family: var(--mono);
+      color: var(--dim);
+      letter-spacing: 0.15em;
+    }
+
+    /* divider */
+    .divider {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      margin: 0 auto 4rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 760px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem 2rem 2rem;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      display: block;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,255,224,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(0,255,224,0.3);
+      transform: translateY(-4px);
+    }
+
+    .card:hover::before { opacity: 1; }
+    .card:hover::after { transform: scaleY(1); }
+
+    .card-index {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      opacity: 0.5;
+      margin-bottom: 1rem;
+      letter-spacing: 0.1em;
+    }
+
+    .card-name {
+      font-family: var(--sans);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #eaf2ff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card-name span {
+      color: var(--accent);
+    }
+
+    .card-url {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+    }
+
+    .card-arrow {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      font-size: 1rem;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .card:hover .card-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    footer {
+      margin-top: 5rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--dim);
+      letter-spacing: 0.15em;
+      text-align: center;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob"></div>
+  <div class="wrapper">
+    <header>
+      <div class="logo">facepalm<span>.</span>tech</div>
+      <div class="tagline">// projects</div>
+    </header>
+
+    <div class="divider"></div>
+
+    <div class="projects">
+
+      <a class="card" href="https://realtorai.facepalmtech.com" target="_blank" rel="noopener">
+        <div class="card-index">01</div>
+        <div class="card-name">Realtor<span>AI</span></div>
+        <div class="card-url">realtorai.facepalmtech.com</div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a class="card" href="https://localfunai.facepalmtech.com" target="_blank" rel="noopener">
+        <div class="card-index">02</div>
+        <div class="card-name">LocalFun<span>AI</span></div>
+        <div class="card-url">localfunai.facepalmtech.com</div>
+        <div class="card-arrow">→</div>
+      </a>
+
+    </div>
+
+    <footer>facepalmtech.com &nbsp;·&nbsp; built with github pages</footer>
+  </div>
+</body>
+</html>
